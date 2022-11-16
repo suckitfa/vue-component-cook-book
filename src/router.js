@@ -7,7 +7,7 @@ export default new Router({
   routes: [
     {
       path:'/form',
-      component:() => import('./views/form.vue')
+      component:() => import('./views/form-page.vue')
     }
   ]
 })
