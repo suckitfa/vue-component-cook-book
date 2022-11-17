@@ -100,12 +100,18 @@ export default {
     },
     onFieldChange() {
       this.validate('change')
+    },
+    // 重置数据
+    resetField() {
+      this.validateState = ''
+      this.validateMessage = ''
+      this.form.model[this.prop] = this.initValue
     }
   }
 }
 </script>
 
-<style scoped>
+<style >
   .i-form-item-label-required:before {
     content: "*";
   }

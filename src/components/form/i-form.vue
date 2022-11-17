@@ -1,5 +1,7 @@
 <template>
-  <h1>form</h1>
+  <form>
+    <slot></slot>
+  </form>
 </template>
 <script>
 // 1. 对form-item进行数据校验
@@ -8,7 +10,7 @@ export default {
   // 向下注入form的实例
   provide() {
     return {
-      form:this
+      form:this,
     }
   },
   // Form组件的接口
@@ -35,6 +37,35 @@ export default {
     this.$on('on-form-item-remove',(field) => {
       if (field.prop) this.fields.splice(this.fields.indexOf(field),1)
     })
+  },
+  methods: {
+    // 全部数据重置
+    resetFields() {
+      this.fields.forEach(field => {
+        field.resetField();
+      })
+    },
+    // 校验
+    validate(callback) {
+      return new Promise((resolve,reject) => {
+        let valid = true;
+        let count = 0;
+        this.fields.forEach(field => {
+          field.validate('',errors => {
+            if (errors) {
+              valid = false;
+              reject(errors)
+            }
+            if (++count === this.fields.length) {
+              resolve(valid)
+              if (typeof callback === 'function') {
+                callback(valid)
+              }
+            }
+          })
+        })
+      })
+    }
   }
 }
 </script>
