@@ -7,7 +7,7 @@
 // 1. 对form-item进行数据校验
 export default {
   name:"iForm",
-  // 向下注入form的实例
+  // 向下注入form的实例不可能吧
   provide() {
     return {
       form:this,
