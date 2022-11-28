@@ -8,4 +8,17 @@ function findComponentUpward(context, componetName) {
   return parent
 }
 
-export { findComponentUpward }
+// 由当前组件向上查找所有的指定名称的组件
+function findComponentsUpward(context,componetName) {
+  let parents = [];
+  const parent = context.$parent;
+
+  if(parent) {
+    if(parent.$options.name === componetName) parents.push(parent)
+    return parents.concat(findComponentsUpward(parent,componetName));
+  } else {
+    return [];
+  }
+}
+
+export { findComponentUpward,findComponentUpward }
