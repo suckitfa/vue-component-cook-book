@@ -21,4 +21,38 @@ function findComponentsUpward(context,componetName) {
   }
 }
 
-export { findComponentUpward,findComponentUpward }
+// 由一个组件，向下查找最近的指定组件
+function findComponentDownward(context,componetName) {
+  // context.$children 得到的是当前组件的全部子组件，所以需要遍历一遍，
+  const childrens = context.$children;
+  let children = null;
+  if (childrens.length) {
+    for(const child of childrens) {
+      const name = child.$options.name;
+  
+      if (name === componetName) {
+        children = child;
+        break;
+      } else {
+        children = findComponentDownward(child,componetName);
+        if(children) break;
+      }
+    }
+  }
+  return children;
+}
+
+// 由一个组件，向下找到所有指定的组件
+function findComponentsDownward(context,componetName) {
+  return context.$children.reduce((components,child) => {
+    if(child.$options.name === componetName) components.push(child)
+    const foundChilds = findComponentsDownward(child,componetName);
+    return components.concat(foundChilds);
+  },[]);
+}
+export { 
+    findComponentUpward,
+    findComponentUpward,
+    findComponentDownward,
+    findComponentsDownward
+}
